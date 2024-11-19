@@ -21,7 +21,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-class Farm extends BaseEntity {
+public class Farm extends BaseEntity {
 	@Column(nullable = false)
 	private String name;
 

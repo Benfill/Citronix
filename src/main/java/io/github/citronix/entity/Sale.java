@@ -20,7 +20,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-class Sale extends BaseEntity {
+public class Sale extends BaseEntity {
 	@Column(nullable = false)
 	private LocalDate saleDate;
 

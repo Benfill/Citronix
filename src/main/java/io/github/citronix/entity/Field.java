@@ -23,7 +23,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-class Field extends BaseEntity {
+public class Field extends BaseEntity {
 	@Column(nullable = false)
 	private String name;
 

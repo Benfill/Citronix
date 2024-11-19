@@ -25,7 +25,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-class Tree extends BaseEntity {
+public class Tree extends BaseEntity {
 	@Column(nullable = false)
 	private LocalDate plantingDate;
 

@@ -26,7 +26,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-class Harvest extends BaseEntity {
+public class Harvest extends BaseEntity {
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Season season;
