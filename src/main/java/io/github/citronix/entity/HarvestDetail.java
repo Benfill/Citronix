@@ -17,7 +17,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-class HarvestDetail extends BaseEntity {
+public class HarvestDetail extends BaseEntity {
 	@Column(nullable = false)
 	private Double quantity; // in kg
 
