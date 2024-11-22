@@ -17,8 +17,8 @@ import io.github.citronix.mapper.FieldMapper;
 import io.github.citronix.repository.IFieldRepository;
 import io.github.citronix.service.IFarmService;
 import io.github.citronix.service.IFieldService;
-import io.github.citronix.validation.FieldValidation;
 import io.github.citronix.validation.ValidationMessage;
+import io.github.citronix.validation.Validator;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -28,7 +28,7 @@ public class FieldServiceImpl implements IFieldService {
 	private final IFieldRepository repository;
 	private final IFarmService farmService;
 	private final FieldMapper mapper;
-	private final FieldValidation validator;
+	private final Validator validator;
 
 	@Override
 	public Optional<Field> getFieldById(Long id) {
@@ -59,7 +59,8 @@ public class FieldServiceImpl implements IFieldService {
 		Double fieldsTotalArea = repository.sumFieldAreasByFarmId(id);
 		fieldsTotalArea = fieldsTotalArea != null ? fieldsTotalArea + dto.getArea() : dto.getArea();
 
-		ValidationMessage validationObj = validator.checkTotalArea(fieldsTotalArea, farm.getTotalArea(), dto.getArea());
+		ValidationMessage validationObj = validator.checkTotalFarmArea(fieldsTotalArea, farm.getTotalArea(),
+				dto.getArea());
 		if (!validationObj.getChecker()) {
 			throw new Validation(validationObj.getMessage());
 		}
@@ -89,7 +90,8 @@ public class FieldServiceImpl implements IFieldService {
 		Double fieldsTotalArea = repository.sumFieldAreasByFarmId(farmId);
 		fieldsTotalArea = fieldsTotalArea != null ? fieldsTotalArea + dto.getArea() : dto.getArea();
 
-		ValidationMessage validationObj = validator.checkTotalArea(fieldsTotalArea, farm.getTotalArea(), dto.getArea());
+		ValidationMessage validationObj = validator.checkTotalFarmArea(fieldsTotalArea, farm.getTotalArea(),
+				dto.getArea());
 		if (!validationObj.getChecker()) {
 			throw new Validation(validationObj.getMessage());
 		}
