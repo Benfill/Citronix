@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -40,9 +41,11 @@ public class Field extends BaseEntity {
 	@JoinColumn(name = "farm_id", nullable = false)
 	private Farm farm;
 
-	@OneToMany(mappedBy = "field", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties({ "field" })
+	@OneToMany(mappedBy = "field", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Tree> trees = new ArrayList<>();
 
-	@OneToMany(mappedBy = "field")
+	@JsonIgnoreProperties({ "field" })
+	@OneToMany(mappedBy = "field", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Harvest> harvests = new ArrayList<>();
 }

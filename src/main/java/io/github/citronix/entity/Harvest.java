@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import io.github.citronix.entity.enums.Season;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,10 +45,12 @@ public class Harvest extends BaseEntity {
 	@Column(nullable = false)
 	private Double totalQuantity; // in kg
 
+	@JsonIgnoreProperties("field")
 	@ManyToOne
 	@JoinColumn(name = "field_id", nullable = false)
 	private Field field;
 
+	@JsonIgnoreProperties({ "harvest" })
 	@OneToMany(mappedBy = "harvest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<HarvestDetail> harvestDetails = new ArrayList<>();
 
