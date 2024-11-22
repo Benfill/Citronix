@@ -21,8 +21,8 @@ import io.github.citronix.dto.FarmDto;
 import io.github.citronix.service.IFarmService;
 import lombok.AllArgsConstructor;
 
-@RestController
 @AllArgsConstructor
+@RestController
 @RequestMapping("/api/farms")
 public class FarmController {
 

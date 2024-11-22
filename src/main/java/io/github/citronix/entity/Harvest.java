@@ -9,9 +9,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import io.github.citronix.entity.enums.Season;
 import lombok.AllArgsConstructor;
@@ -26,12 +28,13 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "harvests")
 public class Harvest extends BaseEntity {
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Season season;
 
-	@Column(nullable = false)
+	@Column(name = "`year`", nullable = false)
 	private Integer year;
 
 	@Column(nullable = false)
@@ -44,9 +47,9 @@ public class Harvest extends BaseEntity {
 	@JoinColumn(name = "field_id", nullable = false)
 	private Field field;
 
-	@OneToMany(mappedBy = "harvest", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "harvest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<HarvestDetail> harvestDetails = new ArrayList<>();
 
-	@OneToMany(mappedBy = "harvest")
+	@OneToMany(mappedBy = "harvest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Sale> sales = new ArrayList<>();
 }

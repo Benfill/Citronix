@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import io.github.citronix.entity.enums.TreeProductivityStage;
@@ -25,6 +26,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "trees")
 public class Tree extends BaseEntity {
 	@Column(nullable = false)
 	private LocalDate plantingDate;
