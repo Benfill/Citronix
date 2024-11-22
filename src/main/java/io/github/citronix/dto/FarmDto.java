@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -25,6 +26,7 @@ public class FarmDto {
 	private String location;
 
 	@NotNull(message = "Total Area is required")
+	@Min(value = 0, message = "A Farm total area must be greater than 0")
 	private Double totalArea;
 
 	@NotNull(message = "Establishment Date is required")
