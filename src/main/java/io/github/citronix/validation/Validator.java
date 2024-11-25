@@ -1,10 +1,14 @@
 package io.github.citronix.validation;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
 import io.github.citronix.entity.Field;
+import io.github.citronix.entity.Harvest;
+import io.github.citronix.entity.enums.Season;
 
 @Component
 public class Validator {
@@ -41,13 +45,45 @@ public class Validator {
 	}
 
 	public ValidationMessage checkPlantingDate(LocalDate date) {
-		int month = date.getMonth().getValue();
+		int month = date.getMonthValue();
 
 		Boolean checker = true;
 		String message = "";
 		if (month > 5 || month < 3) {
 			checker = false;
 			message = "Trees can only be planted from March to May, the ideal period.";
+		}
+
+		return new ValidationMessage(checker, message);
+	}
+
+	public ValidationMessage checkHarvestSeason(List<Harvest> harvests, Season season) {
+		Boolean checker = true;
+		String message = "";
+
+		List<Harvest> harvestsChecker = harvests.stream().filter(h -> h.getSeason() == season)
+				.collect(Collectors.toList());
+		if (!harvestsChecker.isEmpty()) {
+			checker = false;
+			message = "A field can have only one harvest per season, about every 3 months.";
+		}
+
+		return new ValidationMessage(checker, message);
+	}
+
+	public ValidationMessage checkHarvestYear(LocalDate harvestDate, Integer year) {
+		int yearDate = harvestDate.getYear();
+		Boolean checker = true;
+		String message = "";
+
+		if (yearDate != year) {
+			checker = false;
+			message = "The provided year does not match the year in the date.";
+		}
+
+		else if (harvestDate.isAfter(LocalDate.now())) {
+			checker = false;
+			message = "The date cannot be in the future.";
 		}
 
 		return new ValidationMessage(checker, message);

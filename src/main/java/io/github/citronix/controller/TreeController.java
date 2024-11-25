@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.citronix.dto.DeleteDto;
 import io.github.citronix.dto.TreeDto;
+import io.github.citronix.dto.resp.DeleteDto;
 import io.github.citronix.service.ITreeService;
 import lombok.AllArgsConstructor;
 
