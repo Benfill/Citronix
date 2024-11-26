@@ -8,7 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import io.github.citronix.dto.FieldDto;
+import io.github.citronix.dto.req.FieldReqDto;
+import io.github.citronix.dto.resp.FieldRespDto;
 import io.github.citronix.entity.Farm;
 import io.github.citronix.entity.Field;
 import io.github.citronix.exception.CustomNotFoundException;
@@ -36,7 +37,7 @@ public class FieldServiceImpl implements IFieldService {
 	}
 
 	@Override
-	public FieldDto getFieldDetails(Long id) {
+	public FieldRespDto getFieldDetails(Long id) {
 		Field field = getFieldById(id)
 				.orElseThrow(() -> new CustomNotFoundException("Field with id: " + id + " not found"));
 
@@ -44,7 +45,7 @@ public class FieldServiceImpl implements IFieldService {
 	}
 
 	@Override
-	public List<FieldDto> getAllFields(Integer page) {
+	public List<FieldRespDto> getAllFields(Integer page) {
 		int size = 3;
 		Pageable pageable = PageRequest.of(page, size);
 		List<Field> fields = repository.findAll(pageable).getContent();
@@ -52,7 +53,7 @@ public class FieldServiceImpl implements IFieldService {
 	}
 
 	@Override
-	public FieldDto createField(FieldDto dto) {
+	public FieldRespDto createField(FieldReqDto dto) {
 		Long id = dto.getFarm_id();
 		Farm farm = farmService.getFarmById(id)
 				.orElseThrow(() -> new CustomNotFoundException("Farm with id: " + id + " not found"));
@@ -78,7 +79,7 @@ public class FieldServiceImpl implements IFieldService {
 	}
 
 	@Override
-	public FieldDto updateField(FieldDto dto, Long id) {
+	public FieldRespDto updateField(FieldReqDto dto, Long id) {
 		Field field = getFieldById(id)
 				.orElseThrow(() -> new CustomNotFoundException("Farm with id: " + id + " not found"));
 		Long farmId = dto.getFarm_id();

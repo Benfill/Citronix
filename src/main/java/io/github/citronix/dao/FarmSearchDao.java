@@ -34,6 +34,10 @@ public class FarmSearchDao {
 		} else if (request.getLocation() != null) {
 			Predicate locationPredicate = criteriaBuilder.like(root.get("location"), "%" + request.getLocation() + "%");
 			predicates.add(locationPredicate);
+		} else if (request.getEstablishmentDate() != null) {
+			Predicate locationPredicate = criteriaBuilder.like(root.get("establishmentDate"),
+					"%" + request.getEstablishmentDate() + "%");
+			predicates.add(locationPredicate);
 		}
 
 		criteriaQuery.where(criteriaBuilder.or(predicates.toArray(new Predicate[0])));
