@@ -1,6 +1,5 @@
 package io.github.citronix.service.impl;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -12,13 +11,17 @@ import org.springframework.stereotype.Service;
 import io.github.citronix.dto.HarvestDto;
 import io.github.citronix.entity.Field;
 import io.github.citronix.entity.Harvest;
+import io.github.citronix.entity.HarvestDetail;
+import io.github.citronix.entity.Tree;
 import io.github.citronix.entity.enums.Season;
 import io.github.citronix.exception.CustomNotFoundException;
 import io.github.citronix.exception.Validation;
 import io.github.citronix.mapper.HarvestMapper;
 import io.github.citronix.repository.IHarvestRepository;
 import io.github.citronix.service.IFieldService;
+import io.github.citronix.service.IHarvestDetailService;
 import io.github.citronix.service.IHarvestService;
+import io.github.citronix.utils.HarvestUtil;
 import io.github.citronix.validation.ValidationMessage;
 import io.github.citronix.validation.Validator;
 import lombok.AllArgsConstructor;
@@ -29,8 +32,10 @@ public class HarvestServiceIml implements IHarvestService {
 
 	private final IHarvestRepository repository;
 	private final IFieldService fieldService;
+	private final IHarvestDetailService harvestDetailService;
 	private final HarvestMapper mapper;
 	private final Validator validator;
+	private final HarvestUtil harvestUtil;
 
 	@Override
 	public Optional<Harvest> getHarvestById(Long id) {
@@ -60,7 +65,7 @@ public class HarvestServiceIml implements IHarvestService {
 		Field field = fieldService.getFieldById(fieldId)
 				.orElseThrow(() -> new CustomNotFoundException("Field with id: " + fieldId + " not found"));
 
-		Season season = getSeasonByMonth(dto.getHarvestDate());
+		Season season = harvestUtil.getSeasonByMonth(dto.getHarvestDate());
 
 		if (!dto.getHarvestDate().equals(harvest.getHarvestDate())) {
 			List<Harvest> harvestsOfTheYear = repository.findByYearAndFieldId(dto.getYear(), dto.getFieldId());
@@ -75,30 +80,20 @@ public class HarvestServiceIml implements IHarvestService {
 			}
 		}
 
-		Double quantity = getTotalQuantity(field);
+		Double quantity = harvestUtil.getTotalQuantity(field);
 		harvest.setTotalQuantity(quantity);
 		harvest.setField(field);
 		harvest.setSeason(season);
 		Harvest savedHarvest = repository.save(harvest);
+		addMultipleTreeToHarvestDetail(field.getTrees(), savedHarvest);
 		return mapper.entityToDto(savedHarvest);
 	}
 
-	private Season getSeasonByMonth(LocalDate harvestDate) {
-		int month = harvestDate.getMonthValue();
-
-		if ((month >= 6 && month < 9)) {
-			return Season.SUMMER;
-		} else if (month >= 9 && month < 12) {
-			return Season.AUTUMN;
-		} else if (month == 12 || month < 3) {
-			return Season.WINTER;
-		} else {
-			return Season.SPRING;
-		}
-	}
-
-	private Double getTotalQuantity(Field field) {
-		return field.getTrees().stream().mapToDouble(t -> t.getSeasonalProductivity()).sum();
+	public void addMultipleTreeToHarvestDetail(List<Tree> trees, Harvest harvest) {
+		trees.forEach(t -> {
+			HarvestDetail detail = new HarvestDetail(t.getSeasonalProductivity(), harvest, t);
+			harvestDetailService.createHarvestDetail(detail);
+		});
 	}
 
 	@Override
@@ -109,7 +104,7 @@ public class HarvestServiceIml implements IHarvestService {
 		Field field = fieldService.getFieldById(fieldId)
 				.orElseThrow(() -> new CustomNotFoundException("Field with id: " + fieldId + " not found"));
 
-		Season season = getSeasonByMonth(dto.getHarvestDate());
+		Season season = harvestUtil.getSeasonByMonth(dto.getHarvestDate());
 		List<Harvest> harvestsOfTheYear = repository.findByYearAndFieldId(dto.getYear(), dto.getFieldId());
 		ValidationMessage validationObj = validator.checkHarvestSeason(harvestsOfTheYear, season);
 		if (!validationObj.getChecker()) {
@@ -121,7 +116,7 @@ public class HarvestServiceIml implements IHarvestService {
 			throw new Validation(validationObj.getMessage());
 		}
 
-		Double quantity = getTotalQuantity(field);
+		Double quantity = harvestUtil.getTotalQuantity(field);
 		harvest.setTotalQuantity(quantity);
 		harvest.setYear(dto.getYear());
 		harvest.setHarvestDate(dto.getHarvestDate());
