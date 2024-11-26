@@ -8,7 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import io.github.citronix.dto.HarvestDto;
+import io.github.citronix.dto.req.HarvestReqDto;
+import io.github.citronix.dto.resp.HarvestRespDto;
 import io.github.citronix.entity.Field;
 import io.github.citronix.entity.Harvest;
 import io.github.citronix.entity.HarvestDetail;
@@ -43,14 +44,14 @@ public class HarvestServiceIml implements IHarvestService {
 	}
 
 	@Override
-	public HarvestDto getHarvestDetails(Long id) {
+	public HarvestRespDto getHarvestDetails(Long id) {
 		Harvest harvest = getHarvestById(id)
 				.orElseThrow(() -> new CustomNotFoundException("Harvest with id: " + id + " not found"));
 		return mapper.entityToDto(harvest);
 	}
 
 	@Override
-	public List<HarvestDto> getAllHarvests(Integer page) {
+	public List<HarvestRespDto> getAllHarvests(Integer page) {
 		int size = 3;
 		Pageable pageable = PageRequest.of(page, size);
 		List<Harvest> harvests = repository.findAll(pageable).getContent();
@@ -59,7 +60,7 @@ public class HarvestServiceIml implements IHarvestService {
 	}
 
 	@Override
-	public HarvestDto createHarvest(HarvestDto dto) {
+	public HarvestRespDto createHarvest(HarvestReqDto dto) {
 		Harvest harvest = mapper.DtoToentity(dto);
 		long fieldId = dto.getFieldId();
 		Field field = fieldService.getFieldById(fieldId)
@@ -97,7 +98,7 @@ public class HarvestServiceIml implements IHarvestService {
 	}
 
 	@Override
-	public HarvestDto updateHarvest(HarvestDto dto, Long id) {
+	public HarvestRespDto updateHarvest(HarvestReqDto dto, Long id) {
 		Harvest harvest = getHarvestById(id)
 				.orElseThrow(() -> new CustomNotFoundException("Harvest with id: " + id + " not found"));
 		long fieldId = dto.getFieldId();

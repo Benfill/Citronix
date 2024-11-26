@@ -3,19 +3,20 @@ package io.github.citronix.service;
 import java.util.List;
 import java.util.Optional;
 
-import io.github.citronix.dto.TreeDto;
+import io.github.citronix.dto.req.TreeReqDto;
+import io.github.citronix.dto.resp.TreeRespDto;
 import io.github.citronix.entity.Tree;
 
 public interface ITreeService {
 	Optional<Tree> getTreeById(Long id);
 
-	TreeDto getTreeDetails(Long id);
+	TreeRespDto getTreeDetails(Long id);
 
-	List<TreeDto> getAllTrees(Integer page);
+	List<TreeRespDto> getAllTrees(Integer page);
 
-	TreeDto createTree(TreeDto dto);
+	TreeRespDto createTree(TreeReqDto dto);
 
-	TreeDto updateTree(TreeDto dto, Long id);
+	TreeRespDto updateTree(TreeReqDto dto, Long id);
 
 	void delete(Long id);
 }

@@ -8,7 +8,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import io.github.citronix.dto.FarmDto;
+import io.github.citronix.dao.FarmSearchDao;
+import io.github.citronix.dao.SearchRequest;
+import io.github.citronix.dto.req.FarmReqDto;
+import io.github.citronix.dto.resp.FarmRespDto;
 import io.github.citronix.entity.Farm;
 import io.github.citronix.exception.CustomNotFoundException;
 import io.github.citronix.mapper.FarmMapper;
@@ -21,7 +24,7 @@ import lombok.AllArgsConstructor;
 public class FarmServiceImpl implements IFarmService {
 
 	private final IFarmRepository repository;
-
+	private final FarmSearchDao searchDao;
 	private final FarmMapper mapper;
 
 	@Override
@@ -30,7 +33,7 @@ public class FarmServiceImpl implements IFarmService {
 	}
 
 	@Override
-	public FarmDto getFarmDetails(Long id) {
+	public FarmRespDto getFarmDetails(Long id) {
 		Farm farm = getFarmById(id)
 				.orElseThrow(() -> new CustomNotFoundException("Farm with id: " + id + " not found"));
 
@@ -38,7 +41,7 @@ public class FarmServiceImpl implements IFarmService {
 	}
 
 	@Override
-	public List<FarmDto> getAllFarms(Integer page) {
+	public List<FarmRespDto> getAllFarms(Integer page) {
 		int size = 3;
 		Pageable pageable = PageRequest.of(page, size);
 		List<Farm> farms = repository.findAll(pageable).getContent();
@@ -46,13 +49,13 @@ public class FarmServiceImpl implements IFarmService {
 	}
 
 	@Override
-	public FarmDto createFarm(FarmDto dto) {
+	public FarmRespDto createFarm(FarmReqDto dto) {
 		Farm farm = mapper.farmDtoTofarm(dto);
 		return mapper.farmToFarmDto(repository.save(farm));
 	}
 
 	@Override
-	public FarmDto updateFarm(FarmDto dto, Long id) {
+	public FarmRespDto updateFarm(FarmReqDto dto, Long id) {
 		Farm existingFarm = getFarmById(id)
 				.orElseThrow(() -> new CustomNotFoundException("Farm with id: " + id + " not found"));
 
@@ -70,6 +73,12 @@ public class FarmServiceImpl implements IFarmService {
 				.orElseThrow(() -> new CustomNotFoundException("Farm with id: " + id + " not found"));
 
 		repository.delete(existingFarm);
+	}
+
+	@Override
+	public List<FarmRespDto> searchForFarms(SearchRequest request) {
+		List<Farm> farms = searchDao.searchByCriteria(request);
+		return farms.stream().map(farm -> mapper.farmToFarmDto(farm)).collect(Collectors.toList());
 	}
 
 }

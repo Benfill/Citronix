@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.citronix.dto.TreeDto;
+import io.github.citronix.dto.req.TreeReqDto;
 import io.github.citronix.dto.resp.DeleteDto;
+import io.github.citronix.dto.resp.TreeRespDto;
 import io.github.citronix.service.ITreeService;
 import lombok.AllArgsConstructor;
 
@@ -29,27 +30,27 @@ public class TreeController {
 
 	@GetMapping
 	public ResponseEntity<?> index(@RequestParam(name = "page", defaultValue = "0") Integer page) {
-		List<TreeDto> dtos = service.getAllTrees(page);
+		List<TreeRespDto> dtos = service.getAllTrees(page);
 		return ResponseEntity.status(HttpStatus.FOUND.value()).body(dtos);
 
 	}
 
 	@GetMapping("{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
-		TreeDto dto = service.getTreeDetails(id);
+		TreeRespDto dto = service.getTreeDetails(id);
 		return ResponseEntity.status(HttpStatus.FOUND.value()).body(dto);
 	}
 
 	@PostMapping
-	public ResponseEntity<?> store(@RequestBody @Valid TreeDto dto) {
-		TreeDto savedDto = service.createTree(dto);
+	public ResponseEntity<?> store(@RequestBody @Valid TreeReqDto dto) {
+		TreeRespDto savedDto = service.createTree(dto);
 		return ResponseEntity.status(HttpStatus.CREATED.value()).body(savedDto);
 
 	}
 
 	@PutMapping("{id}")
-	public ResponseEntity<?> update(@RequestBody TreeDto dto, @PathVariable Long id) {
-		TreeDto updatedDto = service.updateTree(dto, id);
+	public ResponseEntity<?> update(@RequestBody TreeReqDto dto, @PathVariable Long id) {
+		TreeRespDto updatedDto = service.updateTree(dto, id);
 		return ResponseEntity.status(HttpStatus.CREATED.value()).body(updatedDto);
 
 	}

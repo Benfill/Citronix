@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.citronix.dto.HarvestDto;
+import io.github.citronix.dto.req.HarvestReqDto;
 import io.github.citronix.dto.resp.DeleteDto;
+import io.github.citronix.dto.resp.HarvestRespDto;
 import io.github.citronix.service.IHarvestService;
 import lombok.AllArgsConstructor;
 
@@ -29,22 +30,22 @@ public class HarvestController {
 	private final IHarvestService HarvestService;
 
 	@GetMapping
-	public ResponseEntity<List<HarvestDto>> index(@RequestParam(name = "page", defaultValue = "0") Integer page) {
+	public ResponseEntity<List<HarvestRespDto>> index(@RequestParam(name = "page", defaultValue = "0") Integer page) {
 		return ResponseEntity.status(HttpStatus.OK).body(HarvestService.getAllHarvests(page));
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<HarvestDto> show(@PathVariable Long id) {
+	public ResponseEntity<HarvestRespDto> show(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.FOUND).body(HarvestService.getHarvestDetails(id));
 	}
 
 	@PostMapping
-	public ResponseEntity<?> store(@RequestBody @Valid HarvestDto dto) {
+	public ResponseEntity<?> store(@RequestBody @Valid HarvestReqDto dto) {
 		return ResponseEntity.status(HttpStatus.CREATED.value()).body(HarvestService.createHarvest(dto));
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@RequestBody @Valid HarvestDto dto, @PathVariable Long id) {
+	public ResponseEntity<?> update(@RequestBody @Valid HarvestReqDto dto, @PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK.value()).body(HarvestService.updateHarvest(dto, id));
 	}
 

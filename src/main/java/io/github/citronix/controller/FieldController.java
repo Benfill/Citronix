@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.citronix.dto.FieldDto;
+import io.github.citronix.dto.req.FieldReqDto;
 import io.github.citronix.dto.resp.DeleteDto;
+import io.github.citronix.dto.resp.FieldRespDto;
 import io.github.citronix.service.IFieldService;
 import lombok.AllArgsConstructor;
 
@@ -30,27 +31,27 @@ public class FieldController {
 
 	@GetMapping
 	public ResponseEntity<?> index(@RequestParam(name = "page", defaultValue = "0") Integer page) {
-		List<FieldDto> dtos = fieldService.getAllFields(page);
+		List<FieldRespDto> dtos = fieldService.getAllFields(page);
 		return ResponseEntity.status(HttpStatus.FOUND.value()).body(dtos);
 
 	}
 
 	@GetMapping("{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
-		FieldDto dto = fieldService.getFieldDetails(id);
+		FieldRespDto dto = fieldService.getFieldDetails(id);
 		return ResponseEntity.status(HttpStatus.FOUND.value()).body(dto);
 	}
 
 	@PostMapping
-	public ResponseEntity<?> store(@RequestBody @Valid FieldDto dto) {
-		FieldDto savedDto = fieldService.createField(dto);
+	public ResponseEntity<?> store(@RequestBody @Valid FieldReqDto dto) {
+		FieldRespDto savedDto = fieldService.createField(dto);
 		return ResponseEntity.status(HttpStatus.CREATED.value()).body(savedDto);
 
 	}
 
 	@PutMapping("{id}")
-	public ResponseEntity<?> update(@RequestBody FieldDto dto, @PathVariable Long id) {
-		FieldDto updatedDto = fieldService.updateField(dto, id);
+	public ResponseEntity<?> update(@RequestBody FieldReqDto dto, @PathVariable Long id) {
+		FieldRespDto updatedDto = fieldService.updateField(dto, id);
 		return ResponseEntity.status(HttpStatus.CREATED.value()).body(updatedDto);
 
 	}

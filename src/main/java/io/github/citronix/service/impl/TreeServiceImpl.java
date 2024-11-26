@@ -8,7 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import io.github.citronix.dto.TreeDto;
+import io.github.citronix.dto.req.TreeReqDto;
+import io.github.citronix.dto.resp.TreeRespDto;
 import io.github.citronix.entity.Field;
 import io.github.citronix.entity.Tree;
 import io.github.citronix.exception.CustomNotFoundException;
@@ -36,14 +37,14 @@ public class TreeServiceImpl implements ITreeService {
 	}
 
 	@Override
-	public TreeDto getTreeDetails(Long id) {
+	public TreeRespDto getTreeDetails(Long id) {
 		Tree tree = getTreeById(id)
 				.orElseThrow(() -> new CustomNotFoundException("Tree with id: " + id + " not found"));
 		return mapper.entityToDto(tree);
 	}
 
 	@Override
-	public List<TreeDto> getAllTrees(Integer page) {
+	public List<TreeRespDto> getAllTrees(Integer page) {
 		int size = 3;
 		Pageable pageable = PageRequest.of(page, size);
 
@@ -53,7 +54,7 @@ public class TreeServiceImpl implements ITreeService {
 	}
 
 	@Override
-	public TreeDto createTree(TreeDto dto) {
+	public TreeRespDto createTree(TreeReqDto dto) {
 		Field field = fieldService.getFieldById(dto.getField_id())
 				.orElseThrow(() -> new CustomNotFoundException("Field with id: " + dto.getField_id() + " not found"));
 
@@ -77,7 +78,7 @@ public class TreeServiceImpl implements ITreeService {
 	}
 
 	@Override
-	public TreeDto updateTree(TreeDto dto, Long id) {
+	public TreeRespDto updateTree(TreeReqDto dto, Long id) {
 		Tree tree = getTreeById(id)
 				.orElseThrow(() -> new CustomNotFoundException("Tree with id: " + id + " not found"));
 

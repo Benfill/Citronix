@@ -3,20 +3,21 @@ package io.github.citronix.service;
 import java.util.List;
 import java.util.Optional;
 
-import io.github.citronix.dto.FieldDto;
+import io.github.citronix.dto.req.FieldReqDto;
+import io.github.citronix.dto.resp.FieldRespDto;
 import io.github.citronix.entity.Field;
 
 public interface IFieldService {
 
 	Optional<Field> getFieldById(Long id);
 
-	FieldDto getFieldDetails(Long id);
+	FieldRespDto getFieldDetails(Long id);
 
-	List<FieldDto> getAllFields(Integer page);
+	List<FieldRespDto> getAllFields(Integer page);
 
-	FieldDto createField(FieldDto dto);
+	FieldRespDto createField(FieldReqDto dto);
 
-	FieldDto updateField(FieldDto dto, Long id);
+	FieldRespDto updateField(FieldReqDto dto, Long id);
 
 	void delete(Long id);
 }
