@@ -89,4 +89,15 @@ public class Validator {
 		return new ValidationMessage(checker, message);
 	}
 
+	public ValidationMessage validateDate(LocalDate date) {
+		Boolean checker = true;
+		String message = "";
+		if (date.isAfter(LocalDate.now())) {
+			checker = false;
+			message = "The date cannot be in the future.";
+		}
+
+		return new ValidationMessage(checker, message);
+	}
+
 }
