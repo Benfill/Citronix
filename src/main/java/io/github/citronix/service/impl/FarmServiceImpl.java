@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class FarmService implements IFarmService {
+public class FarmServiceImpl implements IFarmService {
 
 	private final IFarmRepository repository;
 

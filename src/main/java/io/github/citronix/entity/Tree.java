@@ -5,12 +5,17 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import io.github.citronix.entity.enums.TreeProductivityStage;
 import lombok.AllArgsConstructor;
@@ -25,15 +30,18 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "trees")
 public class Tree extends BaseEntity {
 	@Column(nullable = false)
 	private LocalDate plantingDate;
 
+	@JsonIgnoreProperties("field")
 	@ManyToOne
 	@JoinColumn(name = "field_id", nullable = false)
 	private Field field;
 
-	@OneToMany(mappedBy = "tree")
+	@JsonIgnoreProperties({ "tree" })
+	@OneToMany(mappedBy = "tree", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<HarvestDetail> harvestDetails = new ArrayList<>();
 
 	@Transient

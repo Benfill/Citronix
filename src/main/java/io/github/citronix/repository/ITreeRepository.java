@@ -7,5 +7,4 @@ import io.github.citronix.entity.Tree;
 
 @Repository
 public interface ITreeRepository extends JpaRepository<Tree, Long> {
-
 }

@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.citronix.dto.DeleteDto;
 import io.github.citronix.dto.FarmDto;
+import io.github.citronix.dto.resp.DeleteDto;
 import io.github.citronix.service.IFarmService;
 import lombok.AllArgsConstructor;
 
-@RestController
 @AllArgsConstructor
+@RestController
 @RequestMapping("/api/farms")
 public class FarmController {
 
