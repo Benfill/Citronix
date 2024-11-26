@@ -3,7 +3,7 @@ package io.github.citronix.service;
 import java.util.List;
 import java.util.Optional;
 
-import io.github.citronix.dto.HarvestDetailDto;
+import io.github.citronix.dto.resp.HarvestDetailDto;
 import io.github.citronix.entity.HarvestDetail;
 
 public interface IHarvestDetailService {
@@ -13,9 +13,5 @@ public interface IHarvestDetailService {
 
 	List<HarvestDetailDto> getAllHarvestDetails(Integer page);
 
-	HarvestDetailDto createHarvestDetail(HarvestDetailDto dto);
-
-	HarvestDetailDto updateHarvestDetail(HarvestDetailDto dto, Long id);
-
-	void delete(Long id);
+	HarvestDetail createHarvestDetail(HarvestDetail dto);
 }

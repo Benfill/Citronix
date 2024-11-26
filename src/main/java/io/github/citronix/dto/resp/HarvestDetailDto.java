@@ -1,9 +1,9 @@
-package io.github.citronix.dto;
+package io.github.citronix.dto.resp;
 
 import java.time.LocalDateTime;
 
-import javax.validation.constraints.NotNull;
-
+import io.github.citronix.entity.Harvest;
+import io.github.citronix.entity.Tree;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,10 +12,9 @@ import lombok.Data;
 public class HarvestDetailDto {
 	private Long id;
 
-	@NotNull(message = "Tree id is required")
-	private Long treeId;
-	@NotNull(message = "Harvest id is required")
-	private Long harvestId;
+	private Tree tree;
+
+	private Harvest harvest;
 
 	private LocalDateTime createdAt;
 

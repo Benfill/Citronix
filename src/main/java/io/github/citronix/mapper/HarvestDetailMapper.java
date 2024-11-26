@@ -3,7 +3,7 @@ package io.github.citronix.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import io.github.citronix.dto.HarvestDetailDto;
+import io.github.citronix.dto.resp.HarvestDetailDto;
 import io.github.citronix.entity.HarvestDetail;
 
 @Mapper(componentModel = "spring")
