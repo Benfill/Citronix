@@ -54,6 +54,7 @@ public class Harvest extends BaseEntity {
 	@OneToMany(mappedBy = "harvest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<HarvestDetail> harvestDetails = new ArrayList<>();
 
+	@JsonIgnoreProperties({ "harvest" })
 	@OneToMany(mappedBy = "harvest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Sale> sales = new ArrayList<>();
 }
