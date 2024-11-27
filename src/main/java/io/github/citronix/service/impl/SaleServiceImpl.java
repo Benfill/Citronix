@@ -55,7 +55,7 @@ public class SaleServiceImpl implements ISaleService {
 	public SaleRespDto createSale(SaleReqDto dto) {
 		Harvest harvest = harvestService.getHarvestById(dto.getHarvestId()).orElseThrow(
 				() -> new CustomNotFoundException("Harvest with id: " + dto.getHarvestId() + " not found"));
-		ValidationMessage validationObj = validator.validateDate(dto.getSaleDate());
+		ValidationMessage validationObj = validator.validateSaleQuantity(harvest, dto.getQuantity());
 		if (!validationObj.getChecker()) {
 			throw new Validation(validationObj.getMessage());
 		}
@@ -72,11 +72,6 @@ public class SaleServiceImpl implements ISaleService {
 				.orElseThrow(() -> new CustomNotFoundException("Sale with id: " + id + " not found"));
 		Harvest harvest = harvestService.getHarvestById(dto.getHarvestId()).orElseThrow(
 				() -> new CustomNotFoundException("Harvest with id: " + dto.getHarvestId() + " not found"));
-
-		ValidationMessage validationObj = validator.validateDate(dto.getSaleDate());
-		if (!validationObj.getChecker()) {
-			throw new Validation(validationObj.getMessage());
-		}
 		sale.setClientName(dto.getClientName());
 		sale.setHarvest(harvest);
 		sale.setQuantity(dto.getQuantity());

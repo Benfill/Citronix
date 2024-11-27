@@ -81,22 +81,18 @@ public class Validator {
 			message = "The provided year does not match the year in the date.";
 		}
 
-		else if (harvestDate.isAfter(LocalDate.now())) {
-			checker = false;
-			message = "The date cannot be in the future.";
-		}
-
 		return new ValidationMessage(checker, message);
 	}
 
-	public ValidationMessage validateDate(LocalDate date) {
+	public ValidationMessage validateSaleQuantity(Harvest harvest, Double saleQuantity) {
 		Boolean checker = true;
 		String message = "";
-		if (date.isAfter(LocalDate.now())) {
+		Double harvestQuantity = harvest.getTotalQuantity();
+		double salesQuantityTotal = harvest.getSales().stream().mapToDouble(s -> s.getQuantity()).sum();
+		if (saleQuantity > harvestQuantity || saleQuantity + salesQuantityTotal > harvestQuantity) {
 			checker = false;
-			message = "The date cannot be in the future.";
+			message = "Sale quantity exceeds harvest quantity.";
 		}
-
 		return new ValidationMessage(checker, message);
 	}
 

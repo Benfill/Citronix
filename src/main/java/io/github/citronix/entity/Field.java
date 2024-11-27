@@ -13,7 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,16 +37,16 @@ public class Field extends BaseEntity {
 	@Min(value = 1000, message = "A field must be at least 0.1 hectares (1,000 m²)")
 	private Double area;
 
-	@JsonIgnoreProperties("farm")
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "farm_id", nullable = false)
 	private Farm farm;
 
-	@JsonIgnoreProperties({ "field" })
+	@JsonManagedReference
 	@OneToMany(mappedBy = "field", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Tree> trees = new ArrayList<>();
 
-	@JsonIgnoreProperties({ "field" })
+	@JsonManagedReference
 	@OneToMany(mappedBy = "field", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Harvest> harvests = new ArrayList<>();
 }

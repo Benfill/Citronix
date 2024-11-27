@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,7 +37,7 @@ public class Sale extends BaseEntity {
 	@Column(nullable = false)
 	private String clientName;
 
-	@JsonIgnoreProperties("harvest")
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "harvest_id", nullable = false)
 	private Harvest harvest;
