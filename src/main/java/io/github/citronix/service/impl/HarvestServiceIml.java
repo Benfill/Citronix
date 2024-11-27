@@ -68,17 +68,19 @@ public class HarvestServiceIml implements IHarvestService {
 
 		Season season = harvestUtil.getSeasonByMonth(dto.getHarvestDate());
 
-		if (!dto.getHarvestDate().equals(harvest.getHarvestDate())) {
-			List<Harvest> harvestsOfTheYear = repository.findByYearAndFieldId(dto.getYear(), dto.getFieldId());
-			ValidationMessage validationObj = validator.checkHarvestSeason(harvestsOfTheYear, season);
-			if (!validationObj.getChecker()) {
-				throw new Validation(validationObj.getMessage());
-			}
+		List<Harvest> harvestsOfTheYear = repository.findByYearAndFieldId(dto.getYear(), dto.getFieldId());
+		ValidationMessage validationObj = validator.checkHarvestSeason(harvestsOfTheYear, season);
+		if (!validationObj.getChecker()) {
+			throw new Validation(validationObj.getMessage());
+		}
 
-			validationObj = validator.checkHarvestYear(dto.getHarvestDate(), dto.getYear());
-			if (!validationObj.getChecker()) {
-				throw new Validation(validationObj.getMessage());
-			}
+		validationObj = validator.checkHarvestYear(dto.getHarvestDate(), dto.getYear());
+		if (!validationObj.getChecker()) {
+			throw new Validation(validationObj.getMessage());
+		}
+
+		if (field.getTrees().isEmpty()) {
+			throw new Validation("Harvest impossible: no trees in the field.");
 		}
 
 		Double quantity = harvestUtil.getTotalQuantity(field);
@@ -106,15 +108,18 @@ public class HarvestServiceIml implements IHarvestService {
 				.orElseThrow(() -> new CustomNotFoundException("Field with id: " + fieldId + " not found"));
 
 		Season season = harvestUtil.getSeasonByMonth(dto.getHarvestDate());
-		List<Harvest> harvestsOfTheYear = repository.findByYearAndFieldId(dto.getYear(), dto.getFieldId());
-		ValidationMessage validationObj = validator.checkHarvestSeason(harvestsOfTheYear, season);
-		if (!validationObj.getChecker()) {
-			throw new Validation(validationObj.getMessage());
-		}
 
-		validationObj = validator.checkHarvestYear(dto.getHarvestDate(), dto.getYear());
-		if (!validationObj.getChecker()) {
-			throw new Validation(validationObj.getMessage());
+		if (!dto.getHarvestDate().equals(harvest.getHarvestDate())) {
+			List<Harvest> harvestsOfTheYear = repository.findByYearAndFieldId(dto.getYear(), dto.getFieldId());
+			ValidationMessage validationObj = validator.checkHarvestSeason(harvestsOfTheYear, season);
+			if (!validationObj.getChecker()) {
+				throw new Validation(validationObj.getMessage());
+			}
+
+			validationObj = validator.checkHarvestYear(dto.getHarvestDate(), dto.getYear());
+			if (!validationObj.getChecker()) {
+				throw new Validation(validationObj.getMessage());
+			}
 		}
 
 		Double quantity = harvestUtil.getTotalQuantity(field);

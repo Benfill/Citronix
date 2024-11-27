@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import io.github.citronix.validation.CorrectLocalDate;
 import lombok.Data;
 
 @Data
@@ -25,6 +26,7 @@ public class FarmReqDto {
 	private Double totalArea;
 
 	@NotNull(message = "Establishment Date is required")
+	@CorrectLocalDate
 	private LocalDate establishmentDate;
 
 }

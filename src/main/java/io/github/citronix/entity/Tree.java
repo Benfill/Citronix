@@ -15,7 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import io.github.citronix.entity.enums.TreeProductivityStage;
 import lombok.AllArgsConstructor;
@@ -35,12 +36,12 @@ public class Tree extends BaseEntity {
 	@Column(nullable = false)
 	private LocalDate plantingDate;
 
-	@JsonIgnoreProperties("field")
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "field_id", nullable = false)
 	private Field field;
 
-	@JsonIgnoreProperties({ "tree" })
+	@JsonManagedReference
 	@OneToMany(mappedBy = "tree", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<HarvestDetail> harvestDetails = new ArrayList<>();
 

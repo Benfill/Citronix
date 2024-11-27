@@ -12,7 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,7 +41,7 @@ public class Farm extends BaseEntity {
 	@Column(nullable = false)
 	private LocalDate establishmentDate;
 
-	@JsonIgnoreProperties({ "farm" })
+	@JsonManagedReference
 	@OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Field> fields = new ArrayList<>();
 }

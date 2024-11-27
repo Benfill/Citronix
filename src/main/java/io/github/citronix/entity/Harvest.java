@@ -15,7 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import io.github.citronix.entity.enums.Season;
 import lombok.AllArgsConstructor;
@@ -45,16 +46,16 @@ public class Harvest extends BaseEntity {
 	@Column(nullable = false)
 	private Double totalQuantity; // in kg
 
-	@JsonIgnoreProperties("field")
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "field_id", nullable = false)
 	private Field field;
 
-	@JsonIgnoreProperties({ "harvest" })
+	@JsonManagedReference
 	@OneToMany(mappedBy = "harvest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<HarvestDetail> harvestDetails = new ArrayList<>();
 
-	@JsonIgnoreProperties({ "harvest" })
+	@JsonManagedReference
 	@OneToMany(mappedBy = "harvest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Sale> sales = new ArrayList<>();
 }

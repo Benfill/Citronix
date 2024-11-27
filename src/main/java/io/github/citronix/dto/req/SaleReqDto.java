@@ -6,11 +6,13 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import io.github.citronix.validation.CorrectLocalDate;
 import lombok.Data;
 
 @Data
 public class SaleReqDto {
 	@NotNull(message = "Sale date is required")
+	@CorrectLocalDate
 	private LocalDate saleDate;
 
 	@NotNull(message = "Quantity is required")
