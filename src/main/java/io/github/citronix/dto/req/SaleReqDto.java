@@ -15,9 +15,6 @@ public class SaleReqDto {
 	@CorrectLocalDate
 	private LocalDate saleDate;
 
-	@NotNull(message = "Quantity is required")
-	private Double quantity;
-
 	@NotNull(message = "Unit price is required")
 	private Double unitPrice;
 
