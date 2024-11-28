@@ -63,6 +63,7 @@ public class SaleServiceImpl implements ISaleService {
 
 		Sale sale = mapper.DtoToentity(dto);
 		sale.setHarvest(harvest);
+		sale.setQuantity(harvest.getTotalQuantity());
 
 		Sale savedSale = repository.save(sale);
 		return mapper.entityToDto(savedSale);
