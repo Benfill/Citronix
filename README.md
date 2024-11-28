@@ -53,7 +53,7 @@ The architecture is designed to separate concerns, ensuring scalability and main
 ### Steps to Run the Application  
 1. Clone the repository:  
    ```bash
-   git clone [https://github.com/username/citronix.git](https://github.com/JavaAura/Benfill_S3_B4_Citronix)
+   git clone [https://github.com/JavaAura/Benfill_S3_B4_Citronix](https://github.com/JavaAura/Benfill_S3_B4_Citronix)
    cd citronix
    ```
 2. Build the application:  
