@@ -55,10 +55,12 @@ public class SaleServiceImpl implements ISaleService {
 	public SaleRespDto createSale(SaleReqDto dto) {
 		Harvest harvest = harvestService.getHarvestById(dto.getHarvestId()).orElseThrow(
 				() -> new CustomNotFoundException("Harvest with id: " + dto.getHarvestId() + " not found"));
-		ValidationMessage validationObj = validator.validateSaleQuantity(harvest, dto.getQuantity());
+
+		ValidationMessage validationObj = validator.validateSale(harvest);
 		if (!validationObj.getChecker()) {
 			throw new Validation(validationObj.getMessage());
 		}
+
 		Sale sale = mapper.DtoToentity(dto);
 		sale.setHarvest(harvest);
 
@@ -72,9 +74,17 @@ public class SaleServiceImpl implements ISaleService {
 				.orElseThrow(() -> new CustomNotFoundException("Sale with id: " + id + " not found"));
 		Harvest harvest = harvestService.getHarvestById(dto.getHarvestId()).orElseThrow(
 				() -> new CustomNotFoundException("Harvest with id: " + dto.getHarvestId() + " not found"));
+
+		if (dto.getHarvestId() != sale.getHarvest().getId()) {
+			ValidationMessage validationObj = validator.validateSale(harvest);
+			if (!validationObj.getChecker()) {
+				throw new Validation(validationObj.getMessage());
+			}
+		}
+
 		sale.setClientName(dto.getClientName());
 		sale.setHarvest(harvest);
-		sale.setQuantity(dto.getQuantity());
+		sale.setQuantity(harvest.getTotalQuantity());
 		sale.setUnitPrice(dto.getUnitPrice());
 		sale.setSaleDate(dto.getSaleDate());
 

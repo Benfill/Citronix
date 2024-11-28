@@ -84,14 +84,12 @@ public class Validator {
 		return new ValidationMessage(checker, message);
 	}
 
-	public ValidationMessage validateSaleQuantity(Harvest harvest, Double saleQuantity) {
-		Boolean checker = true;
+	public ValidationMessage validateSale(Harvest harvest) {
 		String message = "";
 		Double harvestQuantity = harvest.getTotalQuantity();
-		double salesQuantityTotal = harvest.getSales().stream().mapToDouble(s -> s.getQuantity()).sum();
-		if (saleQuantity > harvestQuantity || saleQuantity + salesQuantityTotal > harvestQuantity) {
-			checker = false;
-			message = "Sale quantity exceeds harvest quantity.";
+		Boolean checker = harvest.getSales().isEmpty();
+		if (!checker) {
+			message = "Harvest quantity is already sold.";
 		}
 		return new ValidationMessage(checker, message);
 	}
